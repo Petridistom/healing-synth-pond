@@ -8,20 +8,20 @@ audio_context.suspend ()
 // define an async click handler function 
 async function init_audio () {
 
-    // wait for audio context to resume
-    await audio_context.resume ()
+// wait for audio context to resume
+await audio_context.resume ()
 }
 
 // pass anonymous function to the .onclick property
 // of the div element
 div_0.onclick = e => {
 
-    // if audio context is not running
-    if (audio_context.state != 'running') {
-        
-        // call the async init audio function
-        init_audio ()
-    }
+// if audio context is not running
+if (audio_context.state != 'running') {
+    
+    // call the async init audio function
+    init_audio ()
+}
 }
 
 // remove padding and scroll bar
@@ -87,108 +87,146 @@ function make_particles (e) {
     })
 }
 
-    // empty array for the squares
-    const squares = []
+// empty array for the squares
+const squares = []
 
-    // midi notes to assign to the squares
-    const chord = [ 58, 65, 69, 72, 58, 65, 69, 72, 58, 65, 72]
+// midi notes to assign to the squares
+const chord = [ 58, 65, 69, 72, 58, 65, 69, 72, 58, 65, 72]
 
-    // we will cutting the canvas into 12 equal columns
-    const w = cnv_1.width / 9
+// we will cutting the canvas into 12 equal columns
+const w = cnv_1.width / 9
 
-    // for loop to create 10 squares
-    for (let i = 0; i < 10; i++) {
+// for loop to create 10 squares
+for (let i = 0; i < 10; i++) {
 
-        // on the left side of second - fifth columns
-        const x = i * w
+    // on the left side of second - fifth columns
+    const x = i * w
 
-        // with a side length of 50
-        const len = 100
+    // with a side length of 50
+    const len = 100
 
-        // adjusting for the horizontal side length
-        const x_adj = x - (len / 2)
+    // adjusting for the horizontal side length
+    const x_adj = x - (len / 2)
 
-        // adjusting for vertical the side length
-        const y_adj = (cnv_1.height / 2) - (len / 2)
+    // adjusting for vertical the side length
+    const y_adj = (cnv_1.height / 2) - (len / 2)
 
-        // create a new vector for the adjusted position
-        const pos = new Vector (x_adj, y_adj)
+    // create a new vector for the adjusted position
+    const pos = new Vector (x_adj, y_adj)
 
-        // get the midi note number from the chord array
-        const note = chord[i]
+    // get the midi note number from the chord array
+    const note = chord[i]
 
-        // pass the adjusted position, side length, chord note
-        // canvas context & audio context to the class constructor
-        // to return a new object of that class
-        // and push it into the squares array
-        squares.push (new Sound_Square (pos, len, note, ctx, audio_context))
-    }
+    // pass the adjusted position, side length, chord note
+    // canvas context & audio context to the class constructor
+    // to return a new object of that class
+    // and push it into the squares array
+    squares.push (new Sound_Square (pos, len, note, ctx, audio_context))
+}
 
-    // define a function to draw frames
-    function draw_frame () {
+// define a function to draw frames
+function draw_frame () {
 
-        // set the fill style to black
-        ctx.fillStyle = `black`
+    // set the fill style to black
+    ctx.fillStyle = `black`
 
-        // fill the whole canvas with black
-        ctx.fillRect (0, 0, cnv_1.width, cnv_1.height)
+    // fill the whole canvas with black
+    ctx.fillRect (0, 0, cnv_1.width, cnv_1.height)
 
-        // draw each square
-        squares.forEach (s => s.draw ())
+    // draw each square
+    squares.forEach (s => s.draw ())
 
-        // call make particles function
-        // for each of the particles in the particle array
-        particles.forEach (p => {
+    // call make particles function
+    // for each of the particles in the particle array
+    particles.forEach (p => {
 
-            // call the .move () method
-            p.move ()
+        // call the .move () method
+        p.move ()
 
-            // call the .draw () method
-            p.draw ()
+        // call the .draw () method
+        p.draw ()
 
-            // each particle must go through 
-            // each of the squares to
-            squares.forEach (s => {
+        // each particle must go through 
+        // each of the squares to
+        squares.forEach (s => {
 
-                // check for collisions
-                p.check_collision (s)
-            })
+            // check for collisions
+            p.check_collision (s)
         })
+    })
 
-        // use request animation frame to call draw_frame
-        // recursively, according to the frame rate, etc.
+    //call display_recursion function
+    display_recursion ()
+
+    // use request animation frame to call draw_frame
+    // recursively, according to the frame rate, etc.
+    requestAnimationFrame (draw_frame)
+}
+
+function recursive_square(x, y, s, l) { // designs the squares that
+                                        // display at the bottom
+
+    ctx.strokeStyle = 'lightblue'
+    // draw a rectangle with
+    // given parameters
+    ctx.strokeRect(x, y, s, l)
+
+    // state an end clause for
+    // recursion in next code
+    if (s > 16) {
+
+    // draw a recursive
+    // style square
+    recursive_square(x + s *0.5, y + s*0.5, s *0.5, l);
+    recursive_square(x - s *0.5, y + s*0.5, s *0.5, l);
+    recursive_square(x - s *0.5, y - s*0.5, s *0.5, l);
+    recursive_square(x + s *0.5, y - s*0.5, s *0.5, l);    
+    }
+}
+
+function display_recursion() { // displays the squares at
+                               // the bottom of the screen
+
+    // call the function 
+    // recursive_squares at
+    // each posx along
+    //the bottom of the screen
+    for (let posx = -150; posx < cnv_1.width +150; posx += 150) {
+
+    // draws the recursive squares 
+    recursive_square(posx, cnv_1.height, 150, 4)
+    }
+}
+
+// async function to handle clicks
+// the event listener will pass in a mouse event
+// here we use the argument "e" to refer to that event object
+async function click_handler_1 (e) {
+
+    // look on the canvas object
+    // if the .running property is not true
+    if (!cnv_1.running) {
+
+        // if the audio context is not running
+        // call and wait for init_audio ()
+        if (audio_context.state != 'running') await init_audio ()
+
+        // otherwise call the make_particles function
+        // passing on to it the mouse event
+        make_particles (e)
+
+        // begin the recursive draw_frame sequence off
         requestAnimationFrame (draw_frame)
+
+        // alter the .running proprety to be true
+        cnv_1.running = true
     }
 
-    // async function to handle clicks
-    // the event listener will pass in a mouse event
-    // here we use the argument "e" to refer to that event object
-    async function click_handler_1 (e) {
+    // if the .running perperty is true
+    else {
 
-        // look on the canvas object
-        // if the .running property is not true
-        if (!cnv_1.running) {
-
-            // if the audio context is not running
-            // call and wait for init_audio ()
-            if (audio_context.state != 'running') await init_audio ()
-
-            // otherwise call the make_particles function
-            // passing on to it the mouse event
-            make_particles (e)
-
-            // begin the recursive draw_frame sequence off
-            requestAnimationFrame (draw_frame)
-
-            // alter the .running proprety to be true
-            cnv_1.running = true
-        }
-
-        // if the .running perperty is true
-        else {
-
-            // call the .toggle () method
-            // on each of the squares
-            // squares.forEach (s => s.toggle ())
-        }
+        // call the .toggle () method
+        // on each of the squares
+        // squares.forEach (s => s.toggle ())
     }
+}
