@@ -34,18 +34,13 @@ cnv_1.width = innerWidth
 cnv_1.height = innerHeight
 cnv_1.style.backgroundColor = 'magenta'
 
-// create a property of that canvas element
-// called "running" and store on it 
-// the value "false"
+// create variable cnv_1.running
+// and set it to false
 cnv_1.running = false
 
 // assign to the onclick event listener
 // the function click_handler_1
-cnv_1.onclick = click_handler_1
-
-// create a new vector that points
-// to the middle of the canvas
-// const mid = new Vector (cnv_1.width / 2, cnv_1.height / 2)
+cnv_1.onclick = click_handler
 
 // get a 2d context from the canvas element
 const ctx = cnv_1.getContext ('2d')
@@ -57,6 +52,8 @@ let particles = []
 // we will call the function on a mouse click later
 function make_particles (e) {
 
+    // executes the code inside only
+    // if the mouse is pressed
     cnv_1.addEventListener('mousedown', (e) => {
         console.log('the mouse is down')
 
@@ -83,7 +80,6 @@ function make_particles (e) {
         if (particles.length === 100) {
             particles.shift()
         }
-
     })
 }
 
@@ -147,8 +143,8 @@ function draw_frame () {
         // call the .draw () method
         p.draw ()
 
-        // each particle must go through 
-        // each of the squares to
+        // for each particle and square
+        // check for collisions
         squares.forEach (s => {
 
             // check for collisions
@@ -167,10 +163,12 @@ function draw_frame () {
     requestAnimationFrame (draw_frame)
 }
 
-function recursive_square(x, y, s, l) { // designs the squares that
-                                        // display at the bottom
+// define a function to draw recursive squares
+function recursive_square(x, y, s, l) { 
 
+    // set the stroke to lightblue
     ctx.strokeStyle = 'lightblue'
+
     // draw a rectangle with
     // given parameters
     ctx.strokeRect(x, y, s, l)
@@ -179,8 +177,9 @@ function recursive_square(x, y, s, l) { // designs the squares that
     // recursion in next code
     if (s > 15) {
 
-    // draw a recursive
-    // style square
+    // call the recursive_square
+    // function to make the design
+    // at the bottom of the screen
     recursive_square(x + s *0.5, y + s*0.5, s *0.5, l);
     recursive_square(x - s *0.5, y + s*0.5, s *0.5, l);
     recursive_square(x - s *0.5, y - s*0.5, s *0.5, l);
@@ -188,26 +187,20 @@ function recursive_square(x, y, s, l) { // designs the squares that
     }
 }
 
-function display_recursion() { // displays the squares at
-                               // the bottom of the screen
+// define a function to display the recursive squares
+function display_recursion() {
 
-    // call the function 
-    // recursive_squares at
-    // each posx along
-    //the bottom of the screen
+    // for each position along the x axis
     for (let posx = -150; posx < cnv_1.width +150; posx += 150) {
 
-    // draws the recursive squares 
+    // draw the recursive squares 
     recursive_square(posx, cnv_1.height, 100, 5)
     }
 }
 
-// async function to handle clicks
-// the event listener will pass in a mouse event
-// here we use the argument "e" to refer to that event object
-async function click_handler_1 (e) {
+// define the click_handler async function
+async function click_handler (e) {
 
-    // look on the canvas object
     // if the .running property is not true
     if (!cnv_1.running) {
 
@@ -227,8 +220,14 @@ async function click_handler_1 (e) {
     }
 }
 
+// define a function to empty the
+// particles array
 function double_click () {
+
+    // listen for a double click event on  cnv_1
     cnv_1.addEventListener('dblclick', (e) => {
+        
+        // empty the array
         particles = []
     })
 }
