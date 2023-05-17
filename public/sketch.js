@@ -58,7 +58,7 @@ const particles = []
 // we will call the function on a mouse click later
 function make_particles (e) {
 
-    document.addEventListener('mousedown', (e) => {
+    cnv_1.addEventListener('mousedown', (e) => {
         console.log('the mouse is down')
 
     // // use the data from the mouse click event to make
