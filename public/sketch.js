@@ -42,6 +42,10 @@ cnv_1.running = false
 // and set it to false
 mouse_down = false
 
+// create a mouseX/y variable
+mouseX = 0
+mouseY = 0
+
 // assign to the onclick event listener
 // the function click_handler_1
 cnv_1.onclick = click_handler
@@ -54,37 +58,38 @@ let particles = []
 
 // function to fill the array with Particle objects
 // we will call the function on a mouse click later
-function make_particles (e) {
+function make_particles () {
 
     // executes the code inside only
     // if the mouse is pressed
     if (mouse_down) {
+
         console.log('the mouse is down')
-    
-    // use the data from the mouse click event to make
-    // a new vector pointing to the location of the mouse
-    const pos = new Vector (e.clientX, e.clientY)
-    
-        if (particles.length < 100) {
+
+        // use the data from the mouse click event to make
+        // a new vector pointing to the location of the mouse
+        const pos = new Vector (mouseX, mouseY)
         
-        // making a vector with magnitude of 0
-        const vec = new Vector (0, 0)
+            if (particles.length < 100) {
+            
+            // making a vector with magnitude of 0
+            const vec = new Vector (0, 0)
 
-        // create an accelereation vector with magnitude 0
-        const acc = new Vector (0, 0)            
+            // create an accelereation vector with magnitude 0
+            const acc = new Vector (0, 0)            
 
-        // console.log('the mouse is making particles')
-        // add the new particle object to the particles array
-        particles.push (new Particle (pos, vec, acc, ctx))
+            // console.log('the mouse is making particles')
+            // add the new particle object to the particles array
+            particles.push (new Particle (pos, vec, acc, ctx))
+            }
         }
-    }
 
-        // removes particles at the 
-        // end of the array to allow
-        // for new particles to spawn
-        if (particles.length === 100) {
-            particles.shift()
-        }
+            // removes particles at the 
+            // end of the array to allow
+            // for new particles to spawn
+            if (particles.length === 100) {
+                particles.shift()
+            }
     }
 
 // empty array for the squares
@@ -158,6 +163,9 @@ function draw_frame () {
 
     // call display_recursion function
     display_recursion ()
+
+    //call the locate_mouse function
+    locate_mouse ()
 
     // call double_click function
     double_click ()
@@ -239,6 +247,16 @@ function toggle_mouse (e) {
 
     cnv_1.addEventListener('mouseup', e => {
         mouse_down = false
+    })
+}
+
+// define a function that finds the mouse
+// and assigns its location coordinate 
+// to the global variables mouseX/Y
+function locate_mouse () {
+    cnv_1.addEventListener('mousemove', e => {
+        mouseX = e.clientX
+        mouseY = e.clientY
     })
 }
 
