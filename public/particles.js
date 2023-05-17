@@ -21,14 +21,15 @@ class Particle {
     // defining how the particle is to move
     move () {
     
-    console.log(this.r)
+    // console.log(this.r)
+
     // get random decimal
     this.r = Math.random(1)
     
     // 50% chance 
     // transformation 1 runs
     if (this.r > 0.5){
-      //1 
+     
       if (0 <= this.d && this.d <= 10) {
         this.pos.x += Math.random(-0.0000002,0.0000002);
         this.d ++
@@ -46,8 +47,7 @@ class Particle {
     // 2 runs
     if (this.r < 0.5) {
 
-    console.log('the particle is moving down')
-      //2
+    // console.log('the particle is moving down')
       this.pos.y += 3
     }
     }

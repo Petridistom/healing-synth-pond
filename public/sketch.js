@@ -60,29 +60,29 @@ function make_particles (e) {
     cnv_1.addEventListener('mousedown', (e) => {
         console.log('the mouse is down')
 
-    // use the data from the mouse click event to make
-    // a new vector pointing to the location of the mouse
-    const pos = new Vector (e.clientX, e.clientY)
+    // // use the data from the mouse click event to make
+    // // a new vector pointing to the location of the mouse
+    // const pos = new Vector (e.clientX, e.clientY)
     
-        if (particles.length < 100) {
+    //     if (particles.length < 100) {
         
-        // making a vector with magnitude of 0
-        const vec = new Vector (0, 0)
+    //     // making a vector with magnitude of 0
+    //     const vec = new Vector (0, 0)
 
-        // create an accelereation vector with magnitude 0
-        const acc = new Vector (0, 0)            
+    //     // create an accelereation vector with magnitude 0
+    //     const acc = new Vector (0, 0)            
 
-        console.log('the mouse is making particles')
-        // add the new particle object to the particles array
-        particles.push (new Particle (pos, vec, acc, ctx))
-        }
+    //     console.log('the mouse is making particles')
+    //     // add the new particle object to the particles array
+    //     particles.push (new Particle (pos, vec, acc, ctx))
+    //     }
 
-        // removes particles at the 
-        // end of the array to allow
-        // for new particles to spawn
-        if (particles.length === 100) {
-            particles.shift()
-        }
+    //     // removes particles at the 
+    //     // end of the array to allow
+    //     // for new particles to spawn
+    //     if (particles.length === 100) {
+    //         particles.shift()
+    //     }
 
     })
 }
