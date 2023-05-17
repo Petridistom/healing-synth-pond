@@ -94,13 +94,13 @@ function make_particles (e) {
     const chord = [ 58, 65, 69, 72, 58, 65, 69, 72, 58, 65, 72]
 
     // we will cutting the canvas into 12 equal columns
-    const w = cnv_1.width / 12
+    const w = cnv_1.width / 9
 
-    // for loop to create 15 squares
-    for (let i = 0; i < 11; i++) {
+    // for loop to create 10 squares
+    for (let i = 0; i < 10; i++) {
 
         // on the left side of second - fifth columns
-        const x = (i) * w
+        const x = i * w
 
         // with a side length of 50
         const len = 100

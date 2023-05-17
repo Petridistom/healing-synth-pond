@@ -85,7 +85,7 @@ class Sound_Square {
         // draw a square at the coordinates held 
         // in the .pos vector, with a width and height
         // equal to the value stored in the .len property
-        this.ctx.fillRect (this.pos.x, this.pos.y, this.len, this.len)
+        this.ctx.fillRect (this.pos.x, this.pos.y, this.len, 20)
     }
 
     // when a particle detects that it has collided with a square
@@ -119,27 +119,27 @@ class Sound_Square {
         }
     }
 
-    // define a method to turn the square on and off
-    toggle () {
+    // // define a method to turn the square on and off
+    // toggle () {
 
-        // if already on
-        if (this.running) {
+    //     // if already on
+    //     if (this.running) {
 
-            // make the colour grey
-            this.col     = `grey`
+    //         // make the colour grey
+    //         this.col     = `grey`
 
-            // set the .running property to false
-            this.running = false
-        }
+    //         // set the .running property to false
+    //         this.running = false
+    //     }
 
-        // if off
-        else {
+    //     // if off
+    //     else {
 
-            // make the colour pink
-            this.col     = `deeppink`
+    //         // make the colour pink
+    //         this.col     = `deeppink`
 
-            // set the .running property to true
-            this.running = true
-        }
-    }
+    //         // set the .running property to true
+    //         this.running = true
+    //     }
+    // }
 }
