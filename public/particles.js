@@ -46,7 +46,7 @@ class Particle {
     // 2 runs
     if (this.r < 0.5) {
       //2
-      this.pos.y += .01
+      this.pos.y += 3
     }
     }
 
