@@ -58,16 +58,18 @@ div_0.onclick = e => {
     // we will call the function on a mouse click later
     function make_particles (e) {
 
+        cnv_1.addEventListener('click', (e) => {
+
         // use the data from the mouse click event to make
         // a new vector pointing to the location of the mouse
-        const pos = new Vector (e.offsetX, e.offsetY)
-
-        // for loop to make 12 particles
-        for (let i = 0; i < 12; i++) {
+        const pos = new Vector (e.clientX, e.clientY)
+        
+        // for loop to make 100 particles
+        for (let i = 0; i < 100; i++) {
 
             // step around a circle 12 times, each time 
             // making a vector with magnitude of 2
-            const vec = vector_from_angle (i * TAU / 12, 2)
+            const vec = new Vector (0, 0)
 
             // create an accelereation vector with magnitude 0
             const acc = new Vector (0, 0)
@@ -76,24 +78,29 @@ div_0.onclick = e => {
             // pass in a clone of the position vector to decouple
             // the positions of the individual particles
             // note we are also passing in canvas and audio contexts
-            const p = new Particle (pos.clone (), vec, acc, ctx, audio_context)
-
+            
+            if (particles.length < 100) {
+            console.log('the mouse is making particles')
             // add the new particle object to the particles array
-            particles.push (p)
+            particles.push (new Particle (pos, vec, acc, ctx, audio_context))
+            } else {
+                particles.shift()
+            }
         }
-    }
+    })
+}
 
     // empty array for the squares
     const squares = []
 
     // midi notes to assign to the squares
-    const chord = [ 58, 65, 69, 72 ]
+    const chord = [ 58, 65, 69, 72, 58, 65, 69, 72 ]
 
     // we will cutting the canvas into 5 equal columns
-    const w = cnv_1.width / 5
+    const w = cnv_1.width / 9
 
     // for loop to create 4 squares
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 8; i++) {
 
         // on the left side of second - fifth columns
         const x = (i + 1) * w
@@ -146,7 +153,7 @@ div_0.onclick = e => {
                 p.check_collision (s)
 
                 // calculate and apply gravitation
-                p.gravitate (s)
+                // p.gravitate (s)
             })
         })
 
@@ -187,6 +194,6 @@ div_0.onclick = e => {
 
             // call the .toggle () method
             // on each of the squares
-            squares.forEach (s => s.toggle ())
+            // squares.forEach (s => s.toggle ())
         }
     }
