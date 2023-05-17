@@ -38,6 +38,10 @@ cnv_1.style.backgroundColor = 'magenta'
 // and set it to false
 cnv_1.running = false
 
+// create mouse_down variable
+// and set it to false
+mouse_down = false
+
 // assign to the onclick event listener
 // the function click_handler_1
 cnv_1.onclick = click_handler
@@ -54,9 +58,9 @@ function make_particles (e) {
 
     // executes the code inside only
     // if the mouse is pressed
-    cnv_1.addEventListener('mousedown', (e) => {
+    if (mouse_down) {
         console.log('the mouse is down')
-
+    
     // use the data from the mouse click event to make
     // a new vector pointing to the location of the mouse
     const pos = new Vector (e.clientX, e.clientY)
@@ -73,6 +77,7 @@ function make_particles (e) {
         // add the new particle object to the particles array
         particles.push (new Particle (pos, vec, acc, ctx))
         }
+    }
 
         // removes particles at the 
         // end of the array to allow
@@ -80,8 +85,7 @@ function make_particles (e) {
         if (particles.length === 100) {
             particles.shift()
         }
-    })
-}
+    }
 
 // empty array for the squares
 const squares = []
@@ -152,11 +156,17 @@ function draw_frame () {
         })
     })
 
-    //call display_recursion function
+    // call display_recursion function
     display_recursion ()
 
-    //call double_click function
+    // call double_click function
     double_click ()
+
+    // call the toggle_mouse function
+    toggle_mouse ()
+
+    // call make_particles function
+    make_particles ()
 
     // use request animation frame to call draw_frame
     // recursively, according to the frame rate, etc.
@@ -218,6 +228,18 @@ async function click_handler (e) {
         // alter the .running proprety to be true
         cnv_1.running = true
     }
+}
+
+// define a function that toggles the 
+// mouse_down variable state
+function toggle_mouse (e) {
+    cnv_1.addEventListener('mousedown', e => {
+        mouse_down = true
+    })
+
+    cnv_1.addEventListener('mouseup', e => {
+        mouse_down = false
+    })
 }
 
 // define a function to empty the
