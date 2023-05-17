@@ -24,12 +24,15 @@ div_0.onclick = e => {
     }
 }
 
+// remove padding and scroll bar
+document.body.style.margin = 0
+document.body.style.overflow = 'hidden'
 
 // get and format the canvas element
 const cnv_1 = document.getElementById ('particle_example')
-cnv_1.width = cnv_1.parentNode.scrollWidth
-cnv_1.height = cnv_1.width * 9 / 16
-cnv_1.style.backgroundColor = 'orange'
+cnv_1.width = innerWidth
+cnv_1.height = innerHeight
+cnv_1.style.backgroundColor = 'black'
 
 // create a property of that canvas element
 // called "running" and store on it 
@@ -40,13 +43,9 @@ cnv_1.running = false
 // the function click_handler_1
 cnv_1.onclick = click_handler_1
 
-// working with TAU is convenient
-// store it in a constant variable
-const TAU = Math.PI * 2
-
 // create a new vector that points
 // to the middle of the canvas
-const mid = new Vector (cnv_1.width / 2, cnv_1.height / 2)
+// const mid = new Vector (cnv_1.width / 2, cnv_1.height / 2)
 
 // get a 2d context from the canvas element
 const ctx = cnv_1.getContext ('2d')
@@ -92,19 +91,19 @@ function make_particles (e) {
     const squares = []
 
     // midi notes to assign to the squares
-    const chord = [ 58, 65, 69, 72, 58, 65, 69, 72 ]
+    const chord = [ 58, 65, 69, 72, 58, 65, 69, 72, 58, 65, 72]
 
-    // we will cutting the canvas into 5 equal columns
-    const w = cnv_1.width / 9
+    // we will cutting the canvas into 12 equal columns
+    const w = cnv_1.width / 12
 
-    // for loop to create 4 squares
-    for (let i = 0; i < 8; i++) {
+    // for loop to create 15 squares
+    for (let i = 0; i < 11; i++) {
 
         // on the left side of second - fifth columns
-        const x = (i + 1) * w
+        const x = (i) * w
 
         // with a side length of 50
-        const len = 50
+        const len = 100
 
         // adjusting for the horizontal side length
         const x_adj = x - (len / 2)

@@ -46,7 +46,7 @@ class Particle {
     // 2 runs
     if (this.r < 0.5) {
 
-        console.log('the particle is moving down')
+    console.log('the particle is moving down')
       //2
       this.pos.y += 3
     }
