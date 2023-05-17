@@ -58,7 +58,7 @@ const particles = []
 // we will call the function on a mouse click later
 function make_particles (e) {
 
-    cnv_1.addEventListener('mousedown', (e) => {
+    document.addEventListener('mousedown', (e) => {
         console.log('the mouse is down')
 
     // // use the data from the mouse click event to make
@@ -158,7 +158,7 @@ function make_particles (e) {
         squares.forEach (s => s.draw ())
 
         // call make particles function
-        make_particles ()
+        // make_particles ()
 
         // use request animation frame to call draw_frame
         // recursively, according to the frame rate, etc.
