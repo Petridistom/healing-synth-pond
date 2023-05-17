@@ -29,7 +29,7 @@ class Sound_Square {
         this.mid = new Vector (mid_x, mid_y)
 
         // make the squares pink
-        this.col     = `deeppink`
+        this.col     = `black`
 
         // on / off state
         // false value -> silent
@@ -40,7 +40,7 @@ class Sound_Square {
         this.osc = this.audio.createOscillator ()
 
         // lets use a sawtooth oscillator
-        this.osc.type = 'sawtooth'
+        this.osc.type = 'sine'
 
         // calculate the frequency of the note it should play
         const cps  = 440 * (2 ** ((this.note - 69) / 12))
@@ -85,7 +85,7 @@ class Sound_Square {
         // draw a square at the coordinates held 
         // in the .pos vector, with a width and height
         // equal to the value stored in the .len property
-        this.ctx.fillRect (this.pos.x, this.pos.y, this.len, 20)
+        this.ctx.fillRect (this.pos.x, this.pos.y, this.len, 1)
     }
 
     // when a particle detects that it has collided with a square
@@ -118,28 +118,4 @@ class Sound_Square {
             this.amp.gain.exponentialRampToValueAtTime (0.000001, now + 8)
         }
     }
-
-    // // define a method to turn the square on and off
-    // toggle () {
-
-    //     // if already on
-    //     if (this.running) {
-
-    //         // make the colour grey
-    //         this.col     = `grey`
-
-    //         // set the .running property to false
-    //         this.running = false
-    //     }
-
-    //     // if off
-    //     else {
-
-    //         // make the colour pink
-    //         this.col     = `deeppink`
-
-    //         // set the .running property to true
-    //         this.running = true
-    //     }
-    // }
 }

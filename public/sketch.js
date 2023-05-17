@@ -32,7 +32,7 @@ document.body.style.overflow = 'hidden'
 const cnv_1 = document.getElementById ('particle_example')
 cnv_1.width = innerWidth
 cnv_1.height = innerHeight
-cnv_1.style.backgroundColor = 'black'
+cnv_1.style.backgroundColor = 'magenta'
 
 // create a property of that canvas element
 // called "running" and store on it 
@@ -51,7 +51,7 @@ cnv_1.onclick = click_handler_1
 const ctx = cnv_1.getContext ('2d')
 
 // create an empty array for the particles
-const particles = []
+let particles = []
 
 // function to fill the array with Particle objects
 // we will call the function on a mouse click later
@@ -60,29 +60,29 @@ function make_particles (e) {
     cnv_1.addEventListener('mousedown', (e) => {
         console.log('the mouse is down')
 
-    // // use the data from the mouse click event to make
-    // // a new vector pointing to the location of the mouse
-    // const pos = new Vector (e.clientX, e.clientY)
+    // use the data from the mouse click event to make
+    // a new vector pointing to the location of the mouse
+    const pos = new Vector (e.clientX, e.clientY)
     
-    //     if (particles.length < 100) {
+        if (particles.length < 100) {
         
-    //     // making a vector with magnitude of 0
-    //     const vec = new Vector (0, 0)
+        // making a vector with magnitude of 0
+        const vec = new Vector (0, 0)
 
-    //     // create an accelereation vector with magnitude 0
-    //     const acc = new Vector (0, 0)            
+        // create an accelereation vector with magnitude 0
+        const acc = new Vector (0, 0)            
 
-    //     console.log('the mouse is making particles')
-    //     // add the new particle object to the particles array
-    //     particles.push (new Particle (pos, vec, acc, ctx))
-    //     }
+        // console.log('the mouse is making particles')
+        // add the new particle object to the particles array
+        particles.push (new Particle (pos, vec, acc, ctx))
+        }
 
-    //     // removes particles at the 
-    //     // end of the array to allow
-    //     // for new particles to spawn
-    //     if (particles.length === 100) {
-    //         particles.shift()
-    //     }
+        // removes particles at the 
+        // end of the array to allow
+        // for new particles to spawn
+        if (particles.length === 100) {
+            particles.shift()
+        }
 
     })
 }
@@ -91,7 +91,7 @@ function make_particles (e) {
 const squares = []
 
 // midi notes to assign to the squares
-const chord = [ 58, 65, 69, 72, 58, 65, 69, 72, 58, 65, 72]
+const chord = [ 51, 55, 58, 63, 65, 68, 65, 63, 58, 55, 51]
 
 // we will cutting the canvas into 12 equal columns
 const w = cnv_1.width / 9
@@ -103,13 +103,14 @@ for (let i = 0; i < 10; i++) {
     const x = i * w
 
     // with a side length of 50
-    const len = 100
+    const len = 500
 
     // adjusting for the horizontal side length
     const x_adj = x - (len / 2)
 
     // adjusting for vertical the side length
-    const y_adj = (cnv_1.height / 2) - (len / 2)
+    const y_adj = cnv_1.height - 90
+    // (cnv_1.height / 2) - (len / 2)
 
     // create a new vector for the adjusted position
     const pos = new Vector (x_adj, y_adj)
@@ -158,6 +159,9 @@ function draw_frame () {
     //call display_recursion function
     display_recursion ()
 
+    //call double_click function
+    double_click ()
+
     // use request animation frame to call draw_frame
     // recursively, according to the frame rate, etc.
     requestAnimationFrame (draw_frame)
@@ -173,7 +177,7 @@ function recursive_square(x, y, s, l) { // designs the squares that
 
     // state an end clause for
     // recursion in next code
-    if (s > 16) {
+    if (s > 15) {
 
     // draw a recursive
     // style square
@@ -194,7 +198,7 @@ function display_recursion() { // displays the squares at
     for (let posx = -150; posx < cnv_1.width +150; posx += 150) {
 
     // draws the recursive squares 
-    recursive_square(posx, cnv_1.height, 150, 4)
+    recursive_square(posx, cnv_1.height, 100, 5)
     }
 }
 
@@ -221,12 +225,10 @@ async function click_handler_1 (e) {
         // alter the .running proprety to be true
         cnv_1.running = true
     }
+}
 
-    // if the .running perperty is true
-    else {
-
-        // call the .toggle () method
-        // on each of the squares
-        // squares.forEach (s => s.toggle ())
-    }
+function double_click () {
+    cnv_1.addEventListener('dblclick', (e) => {
+        particles = []
+    })
 }
