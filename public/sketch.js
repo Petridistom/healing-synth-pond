@@ -26,67 +26,85 @@ div_0.onclick = e => {
 
 
 // get and format the canvas element
-    const cnv_1 = document.getElementById ('particle_example')
-    cnv_1.width = cnv_1.parentNode.scrollWidth
-    cnv_1.height = cnv_1.width * 9 / 16
-    cnv_1.style.backgroundColor = 'orange'
+const cnv_1 = document.getElementById ('particle_example')
+cnv_1.width = cnv_1.parentNode.scrollWidth
+cnv_1.height = cnv_1.width * 9 / 16
+cnv_1.style.backgroundColor = 'orange'
 
-    // create a property of that canvas element
-    // called "running" and store on it 
-    // the value "false"
-    cnv_1.running = false
+// create a property of that canvas element
+// called "running" and store on it 
+// the value "false"
+cnv_1.running = false
 
-    // assign to the onclick event listener
-    // the function click_handler_1
-    cnv_1.onclick = click_handler_1
+// assign to the onclick event listener
+// the function click_handler_1
+cnv_1.onclick = click_handler_1
 
-    // working with TAU is convenient
-    // store it in a constant variable
-    const TAU = Math.PI * 2
+// working with TAU is convenient
+// store it in a constant variable
+const TAU = Math.PI * 2
 
-    // create a new vector that points
-    // to the middle of the canvas
-    const mid = new Vector (cnv_1.width / 2, cnv_1.height / 2)
+// create a new vector that points
+// to the middle of the canvas
+const mid = new Vector (cnv_1.width / 2, cnv_1.height / 2)
 
-    // get a 2d context from the canvas element
-    const ctx = cnv_1.getContext ('2d')
+// get a 2d context from the canvas element
+const ctx = cnv_1.getContext ('2d')
 
-    // create an empty array for the particles
-    const particles = []
+// create an empty array for the particles
+const particles = []
 
-    // function to fill the array with Particle objects
-    // we will call the function on a mouse click later
-    function make_particles (e) {
+// function to fill the array with Particle objects
+// we will call the function on a mouse click later
+function make_particles (e) {
 
-        cnv_1.addEventListener('click', (e) => {
+    cnv_1.addEventListener('mousedown', (e) => {
+        console.log('the mouse is down')
 
-        // use the data from the mouse click event to make
-        // a new vector pointing to the location of the mouse
-        const pos = new Vector (e.clientX, e.clientY)
+    // // use the data from the mouse click event to make
+    // // a new vector pointing to the location of the mouse
+    // const pos = new Vector (e.clientX, e.clientY)
+    
+    //     if (particles.length < 100) {
         
-        // for loop to make 100 particles
-        for (let i = 0; i < 100; i++) {
+    //     // making a vector with magnitude of 0
+    //     const vec = new Vector (0, 0)
 
-            // step around a circle 12 times, each time 
-            // making a vector with magnitude of 2
-            const vec = new Vector (0, 0)
+    //     // create an accelereation vector with magnitude 0
+    //     const acc = new Vector (0, 0)            
 
-            // create an accelereation vector with magnitude 0
-            const acc = new Vector (0, 0)
+    //     console.log('the mouse is making particles')
+    //     // add the new particle object to the particles array
+    //     particles.push (new Particle (pos, vec, acc, ctx, audio_context))
+    //     }
 
-            // create new particle object using the Particle class
-            // pass in a clone of the position vector to decouple
-            // the positions of the individual particles
-            // note we are also passing in canvas and audio contexts
-            
-            if (particles.length < 100) {
-            console.log('the mouse is making particles')
-            // add the new particle object to the particles array
-            particles.push (new Particle (pos, vec, acc, ctx, audio_context))
-            } else {
-                particles.shift()
-            }
-        }
+    //     // removes particles at the 
+    //     // end of the array to allow
+    //     // for new particles to spawn
+    //     if (particles.length === 100) {
+    //         particles.shift()
+    //     }
+
+    //     // for each of the particles in the particle array
+    //     particles.forEach (p => {
+
+    //         // call the .move () method
+    //         p.move ()
+
+    //         // call the .draw () method
+    //         p.draw ()
+
+    //         // each particle must go through 
+    //         // each of the squares to
+    //         squares.forEach (s => {
+
+    //             // check for collisions
+    //             p.check_collision (s)
+
+    //             // calculate and apply gravitation
+    //             // p.gravitate (s)
+    //         })
+    //     })
     })
 }
 
@@ -136,29 +154,11 @@ div_0.onclick = e => {
         // fill the whole canvas with black
         ctx.fillRect (0, 0, cnv_1.width, cnv_1.height)
 
-        // for each of the particles in the particle array
-        particles.forEach (p => {
-
-            // call the .move () method
-            p.move ()
-
-            // call the .draw () method
-            p.draw ()
-
-            // each particle must go through 
-            // each of the squares to
-            squares.forEach (s => {
-
-                // check for collisions
-                p.check_collision (s)
-
-                // calculate and apply gravitation
-                // p.gravitate (s)
-            })
-        })
-
         // draw each square
         squares.forEach (s => s.draw ())
+
+        // call make particles function
+        make_particles ()
 
         // use request animation frame to call draw_frame
         // recursively, according to the frame rate, etc.

@@ -60,7 +60,7 @@ class Particle {
 
         // the particle is a 3 x 3 square
         // the position is the middle pixel
-        this.ctx.fillRect (this.pos.x, this.pos.y, 3, 3)
+        this.ctx.fillRect (this.pos.x, this.pos.y, 10, 10)
     }
 
     // this method accepts a square object as its argument
