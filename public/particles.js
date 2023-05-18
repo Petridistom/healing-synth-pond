@@ -62,7 +62,7 @@ class Particle {
 
         // the particle is a 3 x 3 square
         // the position is the middle pixel
-        this.ctx.fillRect (this.pos.x, this.pos.y, 10, 10)
+        this.ctx.fillRect (this.pos.x, this.pos.y, 3, 3)
     }
 
     // this method accepts a square object as its argument
@@ -91,7 +91,7 @@ class Particle {
 
             // x distance is larger -> horizontal collision
             // pass the square to the x_collision method
-            if (x_distance > y_distance) this.x_collision (s)
+            if (x_distance > y_distance) this.y_collision (s)
 
             // y distance is larger -> vertical collision
             // pass the square to the y_collision method
@@ -99,62 +99,16 @@ class Particle {
         }
     }
 
-    // defining the behaviour for a horizontal collision
-    x_collision (s) {
-
-        // horizontal velocity is reversed (and then some)
-        this.vel.x *= -1.01
-
-        // if the x velocity is positive 
-        // put particle on the right side
-        // otherwise put it on the left
-        this.pos.x = this.vel.x > 0 ? s.pos.x + s.len : s.pos.x
-
-        // give it a touch of random y velocity
-        // to keep things interesting
-        this.vel.y += ((Math.random () * 2) - 1) * 0.02
-    }
-
     // defining the behaviour for a vertical collision
     y_collision (s) {
+        
+      // if the y velocity is positive 
+      // put particle on the bottom
+      // otherwise put it on the top
+      this.pos.y = this.vel.y > 0 ? s.pos.y + s.len : s.pos.y
 
-        // vertical velocity is reversed (and then some)
-        this.vel.y *= -1.01
-
-        // if the y velocity is positive 
-        // put particle on the bottom
-        // otherwise put it on the top
-        this.pos.y = this.vel.y > 0 ? s.pos.y + s.len : s.pos.y 
-
-        // give it a touch of random x velocity
-        // to keep things interesting
-        this.vel.x += ((Math.random () * 2) - 1) * 0.02
+      // give it a touch of random x velocity
+      // to keep things interesting
+      this.vel.x += ((Math.random () * 2) - 1) * 0.02
     }
-
-    // // the gravitate method accepts a square as an argument
-    // // and then applies an acceleration force on the particle 
-    // // towards that square
-    // gravitate (s) {
-
-    //     // make a copy of the position of 
-    //     // the square's centre
-    //     const to_square = s.mid.clone ()
-
-    //     // subtracting the position of the particle
-    //     // yields the vector that goes from 
-    //     // the particle, to the square
-    //     to_square.subtract (this.pos)
-
-    //     // use the inverse-square rule
-    //     // to calculate a gravitational force
-    //     const grav = 128 / (to_square.mag () ** 2)
-
-    //     // set the magnitude of the vector towards
-    //     // the square to be equal to the gravitation
-    //     to_square.setMag (grav)
-
-    //     // add this vector to the particle's
-    //     // acceleration vector
-    //     this.acc.add (to_square)
-    // }
 }

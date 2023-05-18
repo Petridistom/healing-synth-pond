@@ -56,47 +56,11 @@ const ctx = cnv_1.getContext ('2d')
 // create an empty array for the particles
 let particles = []
 
-// function to fill the array with Particle objects
-// we will call the function on a mouse click later
-function make_particles () {
-
-    // executes the code inside only
-    // if the mouse is pressed
-    if (mouse_down) {
-
-        console.log('the mouse is down')
-
-        // use the data from the mouse click event to make
-        // a new vector pointing to the location of the mouse
-        const pos = new Vector (mouseX, mouseY)
-        
-            if (particles.length < 100) {
-            
-            // making a vector with magnitude of 0
-            const vec = new Vector (0, 0)
-
-            // create an accelereation vector with magnitude 0
-            const acc = new Vector (0, 0)            
-
-            // console.log('the mouse is making particles')
-            // add the new particle object to the particles array
-            particles.push (new Particle (pos, vec, acc, ctx))
-            }
-        }
-
-            // removes particles at the 
-            // end of the array to allow
-            // for new particles to spawn
-            if (particles.length === 100) {
-                particles.shift()
-            }
-    }
-
 // empty array for the squares
 const squares = []
 
 // midi notes to assign to the squares
-const chord = [ 51, 55, 58, 63, 65, 68, 65, 63, 58, 55, 51]
+const chord = [41, 45, 48, 53, 55, 58, 63, 68, 73, 77]
 
 // we will cutting the canvas into 12 equal columns
 const w = cnv_1.width / 9
@@ -104,18 +68,17 @@ const w = cnv_1.width / 9
 // for loop to create 10 squares
 for (let i = 0; i < 10; i++) {
 
-    // on the left side of second - fifth columns
+    // on the left side of second - ninth columns
     const x = i * w
 
-    // with a side length of 50
-    const len = 500
+    // with a side length of 90
+    const len = 90
 
     // adjusting for the horizontal side length
     const x_adj = x - (len / 2)
 
     // adjusting for vertical the side length
     const y_adj = cnv_1.height - 90
-    // (cnv_1.height / 2) - (len / 2)
 
     // create a new vector for the adjusted position
     const pos = new Vector (x_adj, y_adj)
@@ -133,11 +96,14 @@ for (let i = 0; i < 10; i++) {
 // define a function to draw frames
 function draw_frame () {
 
-    // set the fill style to black
-    ctx.fillStyle = `black`
+    // set the fill style to dark blue
+    ctx.fillStyle = `#0F1F32`
 
     // fill the whole canvas with black
     ctx.fillRect (0, 0, cnv_1.width, cnv_1.height)
+
+    // call display_recursion function
+    display_recursion ()
 
     // draw each square
     squares.forEach (s => s.draw ())
@@ -161,14 +127,17 @@ function draw_frame () {
         })
     })
 
-    // call display_recursion function
-    display_recursion ()
+    // call pattern function
+    display_pattern ()
 
     //call the locate_mouse function
     locate_mouse ()
 
     // call double_click function
-    double_click ()
+    empty ()
+
+    // call bin_square function
+    bin_square ()
 
     // call the toggle_mouse function
     toggle_mouse ()
@@ -213,6 +182,7 @@ function display_recursion() {
 
     // draw the recursive squares 
     recursive_square(posx, cnv_1.height, 100, 5)
+    recursive_square(posx + 30, cnv_1.height, 100, 4)
     }
 }
 
@@ -238,9 +208,45 @@ async function click_handler (e) {
     }
 }
 
+// function to fill the array with Particle objects
+// we will call the function on a mouse click later
+function make_particles () {
+
+    // executes the code inside only
+    // if the mouse is pressed
+    if (mouse_down) {
+
+        console.log('the mouse is down')
+
+        // use the data from the mouse click event to make
+        // a new vector pointing to the location of the mouse
+        const pos = new Vector (mouseX, mouseY)
+        
+            if (particles.length < 300) {
+            
+            // making a vector with magnitude of 0
+            const vec = new Vector (0, 0)
+
+            // create an accelereation vector with magnitude 0
+            const acc = new Vector (0, 0)            
+
+            // console.log('the mouse is making particles')
+            // add the new particle object to the particles array
+            particles.push (new Particle (pos, vec, acc, ctx))
+            }
+        }
+
+    // removes particles at the 
+    // end of the array to allow
+    // for new particles to spawn
+    if (particles.length === 300) {
+        particles.shift()
+    }
+}
+
 // define a function that toggles the 
 // mouse_down variable state
-function toggle_mouse (e) {
+function toggle_mouse () {
     cnv_1.addEventListener('mousedown', e => {
         mouse_down = true
     })
@@ -262,12 +268,50 @@ function locate_mouse () {
 
 // define a function to empty the
 // particles array
-function double_click () {
+function empty () {
 
-    // listen for a double click event on  cnv_1
-    cnv_1.addEventListener('dblclick', (e) => {
-        
+    // if the mouse is at the top right of the screen
+    if (mouseX >= cnv_1.width - 120 && mouseY <= 120) {
         // empty the array
         particles = []
-    })
+        ctx.fillStyle = 'rgb(18, 58, 74)'
+        ctx.fillRect (cnv_1.width - 120, 0, 120, 120)
+    }
+}
+
+function bin_square () {
+    ctx.fillStyle = 'rgba(18, 58, 74, .5)'
+    ctx.fillRect (cnv_1.width - 120, 0, 120, 120)
+}
+
+function pattern (x1, y1) {
+
+    ctx.beginPath()
+
+    ctx.moveTo(x1, y1 - 10)
+
+    ctx.lineTo(x1     , y1     )
+    ctx.lineTo(x1 + 40, y1 + 00)
+    ctx.lineTo(x1 + 40, y1 + 50)
+    ctx.lineTo(x1 + 00, y1 + 50)
+    ctx.lineTo(x1 + 00, y1 + 10)
+    ctx.lineTo(x1 + 30, y1 + 10)
+    ctx.lineTo(x1 + 30, y1 + 40)
+    ctx.lineTo(x1 + 10, y1 + 40)
+    ctx.lineTo(x1 + 10, y1 + 20)
+    ctx.lineTo(x1 + 20, y1 + 20)
+    ctx.lineTo(x1 + 20, y1 + 30)
+
+    ctx.strokeStyle = 'rgba(218, 206, 0, 0.3)'
+
+    ctx.stroke()
+}
+
+function display_pattern () {
+
+for (let x = 10; x < cnv_1.width + 10; x += 60) {
+    for ( let y = 0; y < cnv_1.height; y += 60) {
+        pattern (x, y)
+    }
+}
 }

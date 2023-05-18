@@ -28,8 +28,8 @@ class Sound_Square {
         // storing this position as a vector
         this.mid = new Vector (mid_x, mid_y)
 
-        // make the squares pink
-        this.col     = `black`
+        // // make the squares pink
+        // this.col     = `deeppink`
 
         // on / off state
         // false value -> silent
@@ -58,21 +58,9 @@ class Sound_Square {
         // setting the gain to functional silence
         this.amp.gain.value = 0.0001
 
-        // we want to create a stereo field
-        // where squares on the left are heard
-        // more in the left channel
-        // so we create a stereo panner node
-        // to store on the object
-        this.pan = this.audio.createStereoPanner ()
-
-        // set it to a value that corresponds with
-        // the x position of the square
-        this.pan.pan.value = (this.mid.x / this.ctx.canvas.width) * 2 - 1
-
         // wire the nodes together:
-        // osc -> amp -> pan -> output
+        // osc -> amp -> output
         this.osc.connect (this.amp)
-            .connect (this.pan)
             .connect (this.audio.destination)
     }
 
@@ -82,10 +70,14 @@ class Sound_Square {
         // fill with the colour stored in the .col property
         this.ctx.fillStyle = this.col
 
+        // set this.col to the same as the background
+        this.col = 'rgba(212, 206, 70, 0.3)'
+
         // draw a square at the coordinates held 
         // in the .pos vector, with a width and height
         // equal to the value stored in the .len property
-        this.ctx.fillRect (this.pos.x, this.pos.y, this.len, 1)
+        this.ctx.fillRect (this.pos.x, this.pos.y, this.len, 6)
+
     }
 
     // when a particle detects that it has collided with a square
@@ -116,6 +108,10 @@ class Sound_Square {
 
             // then ramp down exponentially, to 0.000001, in 8 s
             this.amp.gain.exponentialRampToValueAtTime (0.000001, now + 8)
+
+            // set this.col to golden
+            // when the square is running
+            this.col = 'rgb(212,206,70)'
         }
     }
 }
