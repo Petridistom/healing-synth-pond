@@ -32,7 +32,7 @@ document.body.style.overflow = 'hidden'
 const cnv_1 = document.getElementById ('particle_example')
 cnv_1.width = innerWidth
 cnv_1.height = innerHeight
-cnv_1.style.backgroundColor = 'magenta'
+cnv_1.style.backgroundColor = `#0F1F32`
 
 // create variable cnv_1.running
 // and set it to false
@@ -55,6 +55,13 @@ const ctx = cnv_1.getContext ('2d')
 
 // create an empty array for the particles
 let particles = []
+
+// call resize_window function
+resize_window ()
+
+// call resize_window function
+// when the window is resized
+window.onresize = resize_window
 
 // empty array for the squares
 const squares = []
@@ -314,4 +321,9 @@ for (let x = 10; x < cnv_1.width + 10; x += 60) {
         pattern (x, y)
     }
 }
+}
+
+function resize_window () {
+    cnv_1.width  = window.innerWidth
+    cnv_1.height = window.innerHeight
 }
