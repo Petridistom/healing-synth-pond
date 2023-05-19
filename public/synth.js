@@ -1,5 +1,5 @@
 // defining a class
-class Sound_Square {
+class Synth {
 
     // defining a constructor that accepts the arguments 
     // required to instantiate a new instance of the object

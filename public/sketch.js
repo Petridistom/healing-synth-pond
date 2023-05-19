@@ -1,5 +1,5 @@
 // get the resume audio div 
-const div_0  = document.getElementById ('resume_audio')
+const div  = document.getElementById ('resume_audio')
 
 // get and suspend audio context
 const audio_context = new AudioContext ()
@@ -8,20 +8,20 @@ audio_context.suspend ()
 // define an async click handler function 
 async function init_audio () {
 
-// wait for audio context to resume
-await audio_context.resume ()
+    // wait for audio context to resume
+    await audio_context.resume ()
 }
 
 // pass anonymous function to the .onclick property
 // of the div element
-div_0.onclick = e => {
+div.onclick = e => {
 
-// if audio context is not running
-if (audio_context.state != 'running') {
+    // if audio context is not running
+    if (audio_context.state != 'running') {
     
-    // call the async init audio function
-    init_audio ()
-}
+        // call the async init audio function
+        init_audio ()
+    }
 }
 
 // remove padding and scroll bar
@@ -29,53 +29,54 @@ document.body.style.margin = 0
 document.body.style.overflow = 'hidden'
 
 // get and format the canvas element
-const cnv_1 = document.getElementById ('particle_example')
-cnv_1.width = innerWidth
-cnv_1.height = innerHeight
-cnv_1.style.backgroundColor = `#0F1F32`
+const cnv = document.getElementById ('synth_pond')
+cnv.width = innerWidth
+cnv.height = innerHeight
+cnv.style.backgroundColor = `#0F1F32`
 
-// create variable cnv_1.running
+// create variable cnv.running
 // and set it to false
-cnv_1.running = false
+cnv.running = false
 
 // create mouse_down variable
 // and set it to false
 mouse_down = false
 
-// create a mouseX/y variable
+// create a mouseX/Y variable
 mouseX = 0
 mouseY = 0
 
 // assign to the onclick event listener
-// the function click_handler_1
-cnv_1.onclick = click_handler
+// the function click_handler
+cnv.onclick = click_handler
 
-// get a 2d context from the canvas element
-const ctx = cnv_1.getContext ('2d')
+// create a 2d context for the
+// cnv element
+const ctx = cnv.getContext ('2d')
 
-// create an empty array for the particles
-let particles = []
+// create an empty array for the granules
+let granules = []
 
 // call resize_window function
-resize_window ()
+// resize_window ()
 
 // call resize_window function
 // when the window is resized
 window.onresize = resize_window
 
-// empty array for the squares
-const squares = []
+// empty array for the synths
+const synths = []
 
-// midi notes to assign to the squares
+// midi notes to assign to the synths
 const chord = [41, 45, 48, 53, 55, 58, 63, 68, 73, 77]
 
-// we will cutting the canvas into 12 equal columns
-const w = cnv_1.width / 9
+// separate the cnv into 9 collums
+const w = cnv.width / 9
 
-// for loop to create 10 squares
+// for loop to create 10 synths
 for (let i = 0; i < 10; i++) {
 
-    // on the left side of second - ninth columns
+    // on the left side of first to ninth columns
     const x = i * w
 
     // with a side length of 90
@@ -85,7 +86,7 @@ for (let i = 0; i < 10; i++) {
     const x_adj = x - (len / 2)
 
     // adjusting for vertical the side length
-    const y_adj = cnv_1.height - 90
+    const y_adj = cnv.height - 90
 
     // create a new vector for the adjusted position
     const pos = new Vector (x_adj, y_adj)
@@ -93,57 +94,54 @@ for (let i = 0; i < 10; i++) {
     // get the midi note number from the chord array
     const note = chord[i]
 
-    // pass the adjusted position, side length, chord note
-    // canvas context & audio context to the class constructor
-    // to return a new object of that class
-    // and push it into the squares array
-    squares.push (new Sound_Square (pos, len, note, ctx, audio_context))
+    // push a new Synth with the defined properties
+    // into the synths array
+    synths.push (new Synth (pos, len, note, ctx, audio_context))
 }
 
 // define a function to draw frames
+// allows animation
 function draw_frame () {
 
     // set the fill style to dark blue
     ctx.fillStyle = `#0F1F32`
 
-    // fill the whole canvas with black
-    ctx.fillRect (0, 0, cnv_1.width, cnv_1.height)
+    // fill the whole canvas dark blue
+    ctx.fillRect (0, 0, cnv.width, cnv.height)
 
-    // call display_recursion function
+    // call display_recursion function before
+    // all others to display them on top
     display_recursion ()
 
-    // draw each square
-    squares.forEach (s => s.draw ())
+    // for each synth, call its draw function
+    synths.forEach (s => s.draw ())
 
-    // call make particles function
-    // for each of the particles in the particle array
-    particles.forEach (p => {
+    // for each granule in the array,
+    // call its functions
+    granules.forEach (g => {
 
         // call the .move () method
-        p.move ()
+        g.move ()
 
         // call the .draw () method
-        p.draw ()
+        g.draw ()
 
-        // for each particle and square
-        // check for collisions
-        squares.forEach (s => {
+        // for each synth check for
+        // collisions with granules
+        synths.forEach (s => {
 
             // check for collisions
-            p.check_collision (s)
+            g.check_collision (s)
         })
     })
 
-    // call pattern function
+    // call display_pattern function
     display_pattern ()
 
-    //call the locate_mouse function
+    // call the locate_mouse function
     locate_mouse ()
 
-    // call double_click function
-    empty ()
-
-    // call bin_square function
+    // call the bin_square function
     bin_square ()
 
     // call the toggle_mouse function
@@ -168,7 +166,7 @@ function recursive_square(x, y, s, l) {
     ctx.strokeRect(x, y, s, l)
 
     // state an end clause for
-    // recursion in next code
+    // recursion in next bit of code
     if (s > 15) {
 
     // call the recursive_square
@@ -185,11 +183,11 @@ function recursive_square(x, y, s, l) {
 function display_recursion() {
 
     // for each position along the x axis
-    for (let posx = -150; posx < cnv_1.width +150; posx += 150) {
+    for (let posx = -150; posx < cnv.width +150; posx += 150) {
 
-    // draw the recursive squares 
-    recursive_square(posx, cnv_1.height, 100, 5)
-    recursive_square(posx + 30, cnv_1.height, 100, 4)
+    // draw the recursive synths 
+    recursive_square(posx, cnv.height, 100, 5)
+    recursive_square(posx + 30, cnv.height, 100, 4)
     }
 }
 
@@ -197,7 +195,7 @@ function display_recursion() {
 async function click_handler (e) {
 
     // if the .running property is not true
-    if (!cnv_1.running) {
+    if (!cnv.running) {
 
         // if the audio context is not running
         // call and wait for init_audio ()
@@ -211,54 +209,62 @@ async function click_handler (e) {
         requestAnimationFrame (draw_frame)
 
         // alter the .running proprety to be true
-        cnv_1.running = true
+        cnv.running = true
     }
 }
 
-// function to fill the array with Particle objects
-// we will call the function on a mouse click later
+// function to fill the array with Granule objects
+// it will be called on mousedown later
 function make_particles () {
 
-    // executes the code inside only
+    // executes the code inside, only
     // if the mouse is pressed
     if (mouse_down) {
 
+        // let us know if the mouse is down
         console.log('the mouse is down')
 
         // use the data from the mouse click event to make
         // a new vector pointing to the location of the mouse
         const pos = new Vector (mouseX, mouseY)
-        
-            if (particles.length < 300) {
+
+            // if the granules array is not full yet
+            if (granules.length < 300) {
             
-            // making a vector with magnitude of 0
+            // make a vector with magnitude of 0
             const vec = new Vector (0, 0)
 
-            // create an accelereation vector with magnitude 0
+            // make an accelereation vector with magnitude 0
             const acc = new Vector (0, 0)            
 
-            // console.log('the mouse is making particles')
-            // add the new particle object to the particles array
-            particles.push (new Particle (pos, vec, acc, ctx))
+            // add a new granule object to the granules array
+            granules.push (new Granule (pos, vec, acc, ctx))
             }
         }
 
-    // removes particles at the 
-    // end of the array to allow
-    // for new particles to spawn
-    if (particles.length === 300) {
-        particles.shift()
+    // if the granules array is full
+    if (granules.length === 300) {
+        
+        // remove the last granule
+        granules.shift()
     }
 }
 
 // define a function that toggles the 
 // mouse_down variable state
 function toggle_mouse () {
-    cnv_1.addEventListener('mousedown', e => {
+
+    // listen for the mousedown event on the cnv
+    cnv.addEventListener('mousedown', e => {
+        
+        // set mouse_down to true
         mouse_down = true
     })
 
-    cnv_1.addEventListener('mouseup', e => {
+    // listen for the mouseup event on the cnv
+    cnv.addEventListener('mouseup', e => {
+        
+        // set mouse_down to false
         mouse_down = false
     })
 }
@@ -267,36 +273,49 @@ function toggle_mouse () {
 // and assigns its location coordinate 
 // to the global variables mouseX/Y
 function locate_mouse () {
-    cnv_1.addEventListener('mousemove', e => {
+
+    // listen for the mousemove event on the cnv
+    cnv.addEventListener('mousemove', e => {
+
+        // set the variables mouseX/Y to the 
+        // position values of the mouse
         mouseX = e.clientX
         mouseY = e.clientY
     })
 }
 
-// define a function to empty the
-// particles array
-function empty () {
+// define a funciton that removes the sand
+function bin_square () {
 
     // if the mouse is at the top right of the screen
-    if (mouseX >= cnv_1.width - 120 && mouseY <= 120) {
+    if (mouseX >= cnv.width - 120 && mouseY <= 120) {
+        
         // empty the array
-        particles = []
+        granules = []
+
+        // make the bin opaque
         ctx.fillStyle = 'rgb(18, 58, 74)'
-        ctx.fillRect (cnv_1.width - 120, 0, 120, 120)
+        ctx.fillRect (cnv.width - 120, 0, 120, 120)
     }
-}
 
-function bin_square () {
+    // draw a transparent bin
     ctx.fillStyle = 'rgba(18, 58, 74, .5)'
-    ctx.fillRect (cnv_1.width - 120, 0, 120, 120)
+    ctx.fillRect (cnv.width - 120, 0, 120, 120)
 }
 
+// define a function that draws
+// a pattern on the cnv
 function pattern (x1, y1) {
 
+    // begin a line
     ctx.beginPath()
 
+    // move the drawing cursor to starting
+    // points x1 and y1 - 10
     ctx.moveTo(x1, y1 - 10)
 
+    // draw a line each time to the 
+    // defined points
     ctx.lineTo(x1     , y1     )
     ctx.lineTo(x1 + 40, y1 + 00)
     ctx.lineTo(x1 + 40, y1 + 50)
@@ -309,21 +328,35 @@ function pattern (x1, y1) {
     ctx.lineTo(x1 + 20, y1 + 20)
     ctx.lineTo(x1 + 20, y1 + 30)
 
+    // set the colour of the line to gold
     ctx.strokeStyle = 'rgba(218, 206, 0, 0.3)'
 
+    // draw the line
     ctx.stroke()
 }
 
+// define a function that displays the pattern
 function display_pattern () {
 
-for (let x = 10; x < cnv_1.width + 10; x += 60) {
-    for ( let y = 0; y < cnv_1.height; y += 60) {
-        pattern (x, y)
+    // for all x positions across the cnv
+    for (let x = 10; x < cnv.width + 10; x += 60) {
+        
+        // and for all y positions down the cnv
+        for ( let y = 0; y < cnv.height; y += 60) {
+           
+            // draw the pattern
+            pattern (x, y)
+        }
     }
 }
-}
 
+// define a function that allows
+// the window to be resized
 function resize_window () {
-    cnv_1.width  = window.innerWidth
-    cnv_1.height = window.innerHeight
+    
+    // assign the cnv width and height
+    // to the size of the window width 
+    // and height
+    cnv.width  = window.innerWidth
+    cnv.height = window.innerHeight
 }
