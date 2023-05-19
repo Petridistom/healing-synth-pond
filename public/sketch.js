@@ -86,6 +86,7 @@ for (let i = 0; i < 10; i++) {
     const x_adj = x - (len / 2)
 
     // adjusting for vertical the side length
+    // allow mutible so it can be resized with window
     const y_adj = cnv.height - 90
 
     // create a new vector for the adjusted position
