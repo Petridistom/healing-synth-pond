@@ -32,7 +32,7 @@ document.body.style.overflow = 'hidden'
 const cnv = document.getElementById ('synth_pond')
 cnv.width = innerWidth
 cnv.height = innerHeight
-cnv.style.backgroundColor = `#0F1F32`
+cnv.style.backgroundColor = `deeppink`
 
 // create variable cnv.running
 // and set it to false
